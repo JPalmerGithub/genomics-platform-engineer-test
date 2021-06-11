@@ -1,0 +1,27 @@
+---
+
+name: Terraform Formatting and Linting
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+jobs:
+  terraform:
+    name: Run terraform fmt
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v1
+        with:
+          terraform_version: 0.14.6
+
+      - name: Check Terraform code is correct format
+        id: fmt
+        run: terraform fmt -check
+        continue-on-error: false
